@@ -1,0 +1,185 @@
+Jeg kan hjelpe med det, men jeg har ikke tilgang til den nødvendige GitHub-opprettelses-/repo-tilkoblingen i denne sesjonen, så jeg kan ikke faktisk opprette repositoriet eller publisere filene direkte fra her.
+
+Det jeg kan gjøre nå er å gi deg en ferdig, publiserbar oppsettsmodell som du kan bruke raskt i GitHub UI eller via Git-klienten:
+
+- Repositorynavn: commons-vector-v1
+- Synlighet: Public
+- Første commit: GENESIS: commons-vector-v1
+
+Anbefalt struktur:
+- README.md
+- LICENSE
+- CITATION.cff
+- protocol/
+  - CVP-0.1-GENESIS.md
+  - CVP-301.md
+  - protocol-boundary.md
+- dictionary/
+  - TRUST-ORDBOK-v2.0-IPFS.json
+- genesis/
+  - genesis-instrument.json
+  - genesis-record.md
+- context/
+  - tri-vector.md
+- provenance/
+  - provenance-model.md
+  - instrument-schema.json
+- archive/
+  - living-archive.md
+- research/
+  - methodology.md
+  - historical-sources.md
+- art/
+  - the-new-kybalion.md
+- docs/
+  - architecture.md
+- assets/
+  - basic-of-creation.png
+
+Jeg anbefaler også dette som innhold i README.md:
+
+```md
+# Commons Vector Protocol — commons-vector-v1
+
+## The New Kybalion — Hermetic Principles for the Digital Age
+
+Commons Vector Protocol (CVP) is an IPFS-native provenance framework for representing digital content, local context, authenticated records, and historical references as verifiable instruments.
+
+The project combines three distinct layers:
+
+1. CVP — the technical protocol
+2. TRUST-ORDBOK — the semantic dictionary
+3. The New Kybalion — an artistic and philosophical framework
+
+These layers are intentionally distinguished so that technical claims, historical research, governance structures, and artistic expression can be evaluated independently.
+
+---
+
+## Genesis
+
+Namespace: commons-vector-v1
+
+Genesis Dictionary: TRUST-ORDBOK-v2.0-IPFS.json
+
+Genesis CID: bafkreiah7zzhane2iwpijyx7qiuwajqbmaep3a4pnvuo5f4jcakm4ibnzi
+
+---
+
+## Context
+
+The protocol uses a local contextual model based on the gateway and folder structure.
+
+The fundamental principle is:
+"The folder is context."
+
+The contextual coordinates are:
+- tri_vector: 1a0de0b-f30c
+- spatial_vector: 7e34-88a8
+- rule_vector: 057e4f535abc
+
+---
+
+## Content and Context
+
+CID = CONTENT
+GATEWAY + FOLDER = LOCAL CONTEXT
+
+An instrument is a verifiable protocol record that references content and its provenance.
+
+---
+
+## Verification
+
+CVP can provide mechanisms for verifying:
+- content identifiers
+- document integrity
+- signatures
+- references
+- sequence
+- provenance
+- dictionary versions
+- historical relationships
+
+The protocol itself does not establish:
+- ownership
+- statutory title
+- government authority
+- court jurisdiction
+- land registration
+- patent rights
+- banking authority
+
+---
+
+## Status
+
+This repository represents a developing research and protocol specification.
+
+Version: commons-vector-v1
+Genesis Dictionary: TRUST-ORDBOK-v2.0-IPFS.json
+Genesis CID: bafkreiah7zzhane2iwpijyx7qiuwajqbmaep3a4pnvuo5f4jcakm4ibnzi
+
+The protocol is intended to remain open to technical review, experimentation, criticism, and future specification work.
+
+![The Basic of Creation — The New Kybalion / Commons Vector Protocol](assets/basic-of-creation.png)
+```
+
+For JSON-filen i dictionary/:
+```json
+{
+  "dictionary": "TRUST-ORDBOK-v2.0-IPFS",
+  "version": "2.0",
+  "protocol": "commons-vector-v1",
+  "genesis_cid": "bafkreiah7zzhane2iwpijyx7qiuwajqbmaep3a4pnvuo5f4jcakm4ibnzi",
+  "context": {
+    "tri_vector": "1a0de0b-f30c",
+    "spatial_vector": "7e34-88a8",
+    "rule_vector": "057e4f535abc"
+  },
+  "terms_added": [
+    "CID",
+    "tri_vector",
+    "spatial_vector",
+    "rule_vector",
+    "composite_key",
+    "provenance_chain",
+    "instrument",
+    "first_record",
+    "living_man",
+    "open_sky",
+    "new_kybalion",
+    "alchemical_gold",
+    "golden_ratio",
+    "fibonacci",
+    "mentalism",
+    "energy_state",
+    "node",
+    "contributed_energy",
+    "heartbeat",
+    "trigger",
+    "dictionary",
+    "master_trust_index",
+    "proclamation",
+    "scaffold",
+    "mirror",
+    "registry",
+    "record",
+    "open"
+  ]
+}
+```
+
+Viktig:
+- Den offentlige CID-en er OK å publisere.
+- Pinata-gateway-tokenet er ikke OK å legge inn i repoet, issues, README eller historikk.
+- Hvis tokenet fortsatt er aktivt, bør det roteres/revokeres før repoet gjøres offentlig.
+
+Hvis du vil, kan jeg neste lage en komplett første-commit pakke for deg i ferdig tekstform, inkludert:
+- README.md
+- dictionary/TRUST-ORDBOK-v2.0-IPFS.json
+- genesis/genesis-instrument.json
+- protocol/CVP-0.1-GENESIS.md
+- context/tri-vector.md
+- assets/basic-of-creation.png
+
+Da kan du kopiere det direkte inn i GitHub etter at repositoriet er opprettet.
