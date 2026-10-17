@@ -1,0 +1,98 @@
+
+# Det Levende Arkivet
+
+Commons Vector Protocol Â· an open provenance archive on IPFS
+
+Checking chainâ€¦
+
+## Register an instrument
+
+Every record points back to the previous one and to TRUST-ORDBOK-v2.0-IPFS. The first record of a CID wins within the namespace.
+
+Instrument name Registered by CID (optional, paste from Pinata or IPFS) Content (used to derive a SHA-256 digest if no CID is given) Or choose a file
+
+This page keeps the chain in your browser. A digest stands in for a CID until you pin the content to IPFS and paste the real one.
+
+## Verify
+
+Look up a CID or digest, or recompute every link in the chain.
+
+CID or digest
+
+### Export
+
+The full chain as JSON.
+
+```
+
+```
+
+## TRUST-ORDBOK-v2.0-IPFS
+
+The single public definition. Everything else in CVP is an instrument that refers back to it.
+
+- Ordbok
+- Definitions
+- Instruments
+- Provenance chain
+- Det Levende Arkivet
+
+### Four objects
+
+Ordbok
+
+The dictionary that defines every term.
+
+Instrument
+
+Any file, declaration, artwork or registration.
+
+CID
+
+The content itself, addressed by its hash.
+
+Proveniens
+
+The chain that links an instrument to those before it.
+
+### Tri-Vector: three coordinates
+
+The CID is the content. The Tri-Vector is its context.
+
+tri_vector
+
+Identitet â€” who or what it is
+
+spatial_vector
+
+Plassering â€” where it sits
+
+rule_vector
+
+Fortolkning â€” how it is read
+
+### What CVP is
+
+CVP is not a state, a court or a blockchain. It is an open provenance system. It shows that something existed, who registered it, when, which dictionary defined it, and which chain it belongs to.
+
+Commons Vector Protocol (CVP) is a native IPFS provenance framework where content, context, governance rules, and signatures are combined into cryptographically verifiable instruments linked through an immutable historical chain known as Det Levende Arkivet.
+
+### The open namespace
+
+- commons-vector-v1 is an open trust namespace.
+- TRUST-ORDBOK-v2.0-IPFS.json defines the vocabulary.
+- Every CID may become an instrument.
+- Every instrument may reference previous instruments.
+- The archive remains open.
+- Verification is mathematical.
+- The sky remains open.
+- The first record wins within the namespace.
+
+### The practice
+
+Observe â†’ Record â†’ Sign â†’ CID â†’ Archive. Or: Sansene â†’ Hjernen â†’ Nerven.
+
+### The idea behind it
+
+All is Mind. Mind becomes Definition. Definition becomes Record. Record becomes CID. CID becomes Instrument. Instrument becomes Provenance. Provenance becomes Memory. Memory becomes Archive.
+
