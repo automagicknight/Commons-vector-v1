@@ -1,0 +1,168 @@
+Here’s a Minimal Viable Product (MVP) specification for Det Levende Arkivet (The Living Archive), built on the Commons Vector Protocol (CVP). This MVP focuses on core functionality, user-friendly interaction, and scalability while maintaining the decentralized, cryptographically verifiable nature of CVP.
+📌 CVP MVP: Det Levende Arkivet (The Living Archive)
+Name:
+Det Levende Arkivet v0.1
+A web-based interface for creating, verifying, and exploring CVP instruments in a provenance chain on IPFS.
+🎯 MVP Goals
+Core Functionality:
+Allow users to register instruments (documents, declarations, art, etc.) as CVP-compliant records.
+Enable provenance chain verification (7-step process) via a web interface.
+Visualize chains of instruments and their relationships.
+Export/import full provenance chains as JSON.
+User Experience:
+No installation required: Web-based tool for creating and verifying instruments.
+Browser-based chain tracking: Users can build and verify chains without a backend (optional Pinata/IPFS pinning).
+Educational focus: Clear explanations of CVP principles (Tri-Vector, Genesis, Provenance).
+Technical Simplicity:
+Frontend-only (optional backend for Pinata/IPFS pinning).
+Client-side cryptography: Use Web Crypto API for Ed25519 signatures and SHA-512 hashing.
+IPFS integration: Allow users to paste CIDs or upload files to generate CIDs (via Pinata or local IPFS node).
+Use Cases:
+Document registration (e.g., contracts, certificates).
+Art/provenance tracking (e.g., digital art, NFTs).
+Personal archives (e.g., family records, research notes).
+🛠️ Technical Stack
+Component
+Technology
+Purpose
+Frontend
+React.js (or Vanilla JS)
+Web interface for user interaction.
+Cryptography
+Web Crypto API (Ed25519, SHA-512)
+Signing and hashing in the browser.
+IPFS Integration
+`ipfs-http-client` (JS) or Pinata API
+Upload files to IPFS/Pinata and retrieve CIDs.
+Storage
+LocalStorage (for drafts) + IPFS
+Store temporary digests and pinned CIDs.
+UI Framework
+Tailwind CSS or plain CSS
+Minimalist, functional design.
+Routing
+React Router (or none for simplicity)
+Navigate between "Register" and "Verify" views.
+📂 File Structure
+```
+det-levende-arkivet/
+│
+├── /public
+│ ├── index.html # Main HTML file
+│ ├── styles.css # CSS for the interface
+│ └── favicon.ico
+│
+├── /src
+│ ├── App.jsx # Main React app
+│ ├── components/
+│ │ ├── Register.jsx # Instrument registration form
+│ │ ├── Verify.jsx # Verification tool
+│ │ ├── Chain.jsx # Provenance chain visualizer
+│ │ └── Export.jsx # Export chain as JSON
+│ │
+│ ├── utils/
+│ │ ├── crypto.js # Ed25519 signing, SHA-512 hashing
+│ │ ├── ipfs.js # IPFS/Pinata upload logic
+│ │ ├── vectors.js # Tri-Vector logic
+│ │ └── cvp.js # Core CVP logic (instrument creation/verification)
+│ │
+│ ├── hooks/ # React hooks (e.g., for IPFS state)
+│ └── index.js # React entry point
+│
+├── package.json
+└── README.md
+```
+🌐 MVP Features
+1. Register an Instrument
+User Flow:
+User lands on "Register" page.
+User provides:
+Instrument name (e.g., "Proclamation of The New Kybalion").
+Content (either:
+Paste a CID (from Pinata/IPFS).
+Upload a file (auto-generates CID via Pinata).
+Paste raw text (auto-generates SHA-256 digest as a placeholder CID).
+Tri-Vector coordinates (optional, defaults to `commons-vector-v1`):
+`tri_vector` (Identity, e.g., `1a0de0b-f30c`).
+`spatial_vector` (Location, e.g., `7e34-88a8`).
+`rule_vector` (Interpretation, e.g., `057e4f535abc`).
+Previous instrument (CID or digest of the prior instrument, or `"GENESIS"`).
+User clicks "Register".
+System:
+Generates a CID (if file/text is provided).
+Derives a Composite Key:
+```
+Composite Key = SHA512(CID + ":" + spatial_vector + ":" + rule_vector)
+```
+Signs the composite key with Ed25519 (user provides a private key or generates one in-browser).
+Creates a CVP Instrument (`.car.json` format) and stores it in localStorage (or pins to IPFS if user opts in).
+Displays the instrument details (CID, Composite Key, Signature, etc.).
+UI Mockup:
+```plaintext
+-----------------------------------------
+| Register an Instrument |
+-----------------------------------------
+| Instrument Name: [Proclamation |
+| Content: [Choose File] |
+| OR [Paste CID:_____]
+| OR [Paste Text:____]
+|
+| Tri-Vector: [1a0de0b-f30c____] |
+| Spatial-Vector: [7e34-88a8______] |
+| Rule-Vector: [057e4f535abc____] |
+| Previous: [GENESIS_________] |
+|
+| [Register Instrument] |
+-----------------------------------------
+```
+Output:
+Instrument JSON (displayed to user):
+```json
+{
+"instrument": "001",
+"name": "Proclamation of The New Kybalion",
+"trust": "commons-vector-v1",
+"cid": "bafkreih...",
+"tri_vector": "1a0de0b-f30c",
+"spatial_vector": "7e34-88a8",
+"rule_vector": "057e4f535abc",
+"previous": "GENESIS",
+"signature": {
+"algorithm": "ed25519",
+"public_key": "d75a980182b10ab7...",
+"value": "2d8f9a1b8c7d6e5f..."
+},
+"timestamp": "2026-10-17T12:00:00Z"
+}
+```
+Link to verify the instrument.
+Option to pin to IPFS/Pinata (if not already pinned).
+2. Verify an Instrument
+User Flow:
+User lands on "Verify" page.
+User pastes a CID or digest (or selects from localStorage).
+System:
+Retrieves the instrument from IPFS (if CID) or localStorage (if digest).
+Performs the 7-step verification:
+Retrieves payload from IPFS (if CID provided).
+Hashes payload locally and compares to CID.
+Verifies Ed25519 signature over the composite key.
+Checks `previous` field matches the prior instrument’s composite key.
+Recomputes composite key and confirms it matches the instrument’s `composite` field.
+Iterates backward to `"GENESIS"` (Instrument #000).
+Confirms the chain is unbroken.
+Displays verification result (✅ Valid or ❌ Invalid with errors).
+UI Mockup:
+```plaintext
+-----------------------------------------
+| Verify an Instrument |
+-----------------------------------------
+| CID or Digest: [bafkreih____________] |
+|
+| [Verify] |
+-----------------------------------------
+| Result: ✅ Valid |
+| - CID matches content hash |
+| - Signature is valid |
+| - Provenance chain is unbroken |
+| - Linked to G
