@@ -1,0 +1,116 @@
+{
+    "schema":  "commons-vector-v1/document-catalog/1.0",
+    "namespace":  "commons-vector-v1",
+    "dictionary":  {
+                       "name":  "TRUST-ORDBOK-v2.0-IPFS.json",
+                       "cid":  "bafkreiah7zzhane2iwpijyx7qiuwajqbmaep3a4pnvuo5f4jcakm4ibnzi"
+                   },
+    "description":  "Unsigned local references to supplied PDFs. CIDs use CIDv1 raw blocks and sha2-512 multihashes. Composite keys use SHA-512 over UTF-8(CID + spatial_vector + rule_vector) following the source dictionary formula.",
+    "records":  [
+                    {
+                        "record_type":  "unsigned_document_reference",
+                        "name":  "Commons Vector Protocol",
+                        "file":  "documents/Commons_Vector_Protocol.pdf",
+                        "content":  {
+                                        "cid":  "bafkrgqdgdfgfahfe74mbddiyk3qfjpi7njwujmplbhoh4ktazv2uuism4i6yurqa24fzdkgfed7jmjdkzibhxzcc3pb5itu6igxb7qrmskooe",
+                                        "digest":  {
+                                                       "algorithm":  "SHA-512",
+                                                       "value":  "66194c501ca4ff18118d1856e054bd1f6a6d44b1eb09dc7e2a60cd754a224ce23d8a4600d70b91a8c520fe96246aca027be442dbc3d44e9e41ae1fc22c929ce2"
+                                                   },
+                                        "media_type":  "application/pdf",
+                                        "size_bytes":  16571212
+                                    },
+                        "tri_vector":  {
+                                           "content_cid":  "bafkrgqdgdfgfahfe74mbddiyk3qfjpi7njwujmplbhoh4ktazv2uuism4i6yurqa24fzdkgfed7jmjdkzibhxzcc3pb5itu6igxb7qrmskooe",
+                                           "spatial_vector":  "trust:commons-vector-v1:living:documents/protocol-presentation",
+                                           "rule_vector":  "dictionary:TRUST-ORDBOK-v2.0-IPFS.json; namespace:commons-vector-v1; public:document-reference"
+                                       },
+                        "vector_identifiers":  {
+                                                   "tri_vector":  "1a0de0b-f30c",
+                                                   "spatial_vector":  "7e34-88a8",
+                                                   "rule_vector":  "057e4f535abc"
+                                               },
+                        "composite_key":  {
+                                              "algorithm":  "SHA-512",
+                                              "input_encoding":  "UTF-8",
+                                              "input":  "CID + spatial_vector + rule_vector",
+                                              "value":  "6fb88977ae3499a963911ed252ed28d90e973ac034515cc05a385080b7415dc781a36bc592aaee0e4e812b10aa551ebc72fd7c3eb5fff0d4bf7c0594afc8843e"
+                                          },
+                        "provenance":  {
+                                           "status":  "catalog-reference-only",
+                                           "signature":  null,
+                                           "archive_recorded":  false
+                                       }
+                    },
+                    {
+                        "record_type":  "unsigned_document_reference",
+                        "name":  "Commons Vector Protocol Audit Guide",
+                        "file":  "documents/Commons_Vector_Protocol_Audit_Guide.pdf",
+                        "content":  {
+                                        "cid":  "bafkrgqcsj3r2mziu72nfj52lisamofg2jzmpycdpppbduyjrx3xprgb5gqj3hhcdmqbvpawvhyvoqkqx7gmdpldp2pgpggf4ntrrw7drfqook",
+                                        "digest":  {
+                                                       "algorithm":  "SHA-512",
+                                                       "value":  "524ee3a66514fe9a54f74b4480c714da4e58fc086f7bc23a6131beeef8983d3413b39c4364035782d53e2ae82a17f99837ac6fd3ccf318bc6ce31b7c712c1ce5"
+                                                   },
+                                        "media_type":  "application/pdf",
+                                        "size_bytes":  16070211
+                                    },
+                        "tri_vector":  {
+                                           "content_cid":  "bafkrgqcsj3r2mziu72nfj52lisamofg2jzmpycdpppbduyjrx3xprgb5gqj3hhcdmqbvpawvhyvoqkqx7gmdpldp2pgpggf4ntrrw7drfqook",
+                                           "spatial_vector":  "trust:commons-vector-v1:living:documents/audit-guide",
+                                           "rule_vector":  "dictionary:TRUST-ORDBOK-v2.0-IPFS.json; namespace:commons-vector-v1; public:document-reference"
+                                       },
+                        "vector_identifiers":  {
+                                                   "tri_vector":  "1a0de0b-f30c",
+                                                   "spatial_vector":  "7e34-88a8",
+                                                   "rule_vector":  "057e4f535abc"
+                                               },
+                        "composite_key":  {
+                                              "algorithm":  "SHA-512",
+                                              "input_encoding":  "UTF-8",
+                                              "input":  "CID + spatial_vector + rule_vector",
+                                              "value":  "0d5db083c511ee28037246c8ae147bb309029eb98dc3cf7ff8a0911fc974bb62d90f0d869d26e67cd0bd37aa60b024208f74c73a6d9048c18192e1426ef2a8f2"
+                                          },
+                        "provenance":  {
+                                           "status":  "catalog-reference-only",
+                                           "signature":  null,
+                                           "archive_recorded":  false
+                                       }
+                    },
+                    {
+                        "record_type":  "unsigned_document_reference",
+                        "name":  "All Three Deliverables",
+                        "file":  "documents/Gmail_All_Three_Deliverables.pdf",
+                        "content":  {
+                                        "cid":  "bafkrgqeqtepp2m2cbju3h6qlpp72azysz2mt6mnsx2jpnkyo2y4ypa5haaz2q3x3t7xizdx7syim5277noilbyqiyf5l5y32oiwvycghoqvgq",
+                                        "digest":  {
+                                                       "algorithm":  "SHA-512",
+                                                       "value":  "90991efd33420a69b3fa0b7bffa06712ce993f31b2be92f6ab0ed6398783a70033a86efb9fee8c8eff9610ceebff6b90b0e208c17abee37a722d5c08c7742a68"
+                                                   },
+                                        "media_type":  "application/pdf",
+                                        "size_bytes":  2269871
+                                    },
+                        "tri_vector":  {
+                                           "content_cid":  "bafkrgqeqtepp2m2cbju3h6qlpp72azysz2mt6mnsx2jpnkyo2y4ypa5haaz2q3x3t7xizdx7syim5277noilbyqiyf5l5y32oiwvycghoqvgq",
+                                           "spatial_vector":  "trust:commons-vector-v1:living:documents/all-three-deliverables",
+                                           "rule_vector":  "dictionary:TRUST-ORDBOK-v2.0-IPFS.json; namespace:commons-vector-v1; public:document-reference"
+                                       },
+                        "vector_identifiers":  {
+                                                   "tri_vector":  "1a0de0b-f30c",
+                                                   "spatial_vector":  "7e34-88a8",
+                                                   "rule_vector":  "057e4f535abc"
+                                               },
+                        "composite_key":  {
+                                              "algorithm":  "SHA-512",
+                                              "input_encoding":  "UTF-8",
+                                              "input":  "CID + spatial_vector + rule_vector",
+                                              "value":  "b51996bc09eb6e84f5704aeca3244f49bfe7ac3effe102ba448b75cd6479cc9e943b4a93b4c762496f90f9231998e81ed24e10c4a24e1c74073d3f58211daac8"
+                                          },
+                        "provenance":  {
+                                           "status":  "catalog-reference-only",
+                                           "signature":  null,
+                                           "archive_recorded":  false
+                                       }
+                    }
+                ]
+}

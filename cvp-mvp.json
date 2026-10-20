@@ -1,0 +1,60 @@
+{
+  "protocol": "Commons Vector Protocol",
+  "version": "commons-vector-v1",
+  "namespace": "commons-vector-v1",
+  "title": "Det Levende Arkivet",
+  "purpose": "A browser-based demonstration of signed, content-addressed instruments and linked provenance records.",
+  "genesis_dictionary": {
+    "name": "TRUST-ORDBOK-v2.0-IPFS.json",
+    "cid": "bafkreiah7zzhane2iwpijyx7qiuwajqbmaep3a4pnvuo5f4jcakm4ibnzi"
+  },
+  "vectors": {
+    "tri_vector": {
+      "value": "1a0de0b-f30c",
+      "role": "Identity and instrument context"
+    },
+    "spatial_vector": {
+      "value": "7e34-88a8",
+      "role": "Position within the namespace"
+    },
+    "rule_vector": {
+      "value": "057e4f535abc",
+      "role": "Interpretation and protocol rules"
+    }
+  },
+  "foundational_objects": [
+    "dictionary",
+    "instrument",
+    "CID",
+    "provenance"
+  ],
+  "prototype_features": {
+    "signatures": "Ed25519 using the browser Web Crypto API",
+    "payload_digest": "SHA-512",
+    "payload_cid": "CIDv1, raw codec and sha2-512 multihash, unless an external CID is supplied",
+    "instrument_cid": "CIDv1, raw codec and sha2-512 multihash over the canonical instrument including its signature",
+    "chain": "Each instrument references the previous instrument CID; genesis uses the GENESIS marker and SELF root marker",
+    "storage": "Records in browser local storage; non-extractable signing key in IndexedDB",
+    "ipfs": "Optional user-triggered local Kubo raw-block upload and pin for payloads up to 2 MiB",
+    "archive": "JSON export and verification-before-import"
+  },
+  "limitations": [
+    "Local browser records are not a global or first-writer-wins registry.",
+    "The prototype does not automatically retrieve or re-hash payload bytes during later chain verification.",
+    "A valid signature proves control of the corresponding private key, not a real-world identity, factual truth, trusted time, or legal effect.",
+    "The standalone page does not implement Pinata uploads or store Pinata API credentials.",
+    "The prototype does not establish legal jurisdiction, ownership, or statutory rights."
+  ],
+  "pages_app": "index.html",
+  "presentation_image": "assets/commons-vector-presentation.png",
+  "presentation_source": "cvp-mvp-source.md",
+  "genesis_descriptor": "cvp-genesis.json",
+  "dictionary_view": "cvp-dictionary.json",
+  "trust_source": "cvp-ministry-trust-source.json",
+  "documents": [
+    "documents/Commons_Vector_Protocol.pdf",
+    "documents/Commons_Vector_Protocol_Audit_Guide.pdf",
+    "documents/Gmail_All_Three_Deliverables.pdf"
+  ],
+  "document_catalog": "documents/cvp-document-catalog.json"
+}

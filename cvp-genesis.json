@@ -1,0 +1,49 @@
+{
+    "schema":  "commons-vector-v1/genesis-descriptor/1.0",
+    "namespace":  "commons-vector-v1",
+    "title":  "Det Levende Arkivet — Genesis descriptor",
+    "status":  "unsigned-public-descriptor",
+    "purpose":  "Defines the public namespace, vocabulary reference, and document coordinates used by this demonstration.",
+    "dictionary":  {
+                       "name":  "TRUST-ORDBOK-v2.0-IPFS.json",
+                       "declared_cid":  "bafkreiah7zzhane2iwpijyx7qiuwajqbmaep3a4pnvuo5f4jcakm4ibnzi",
+                       "local_view":  "cvp-dictionary.json",
+                       "cid_verification":  "The CID is a declared source reference and is not recomputed from the supplied mixed-format local file."
+                   },
+    "vectors":  {
+                    "tri_vector":  {
+                                       "identifier":  "1a0de0b-f30c",
+                                       "meaning":  "Content identity and instrument context"
+                                   },
+                    "spatial_vector":  {
+                                           "identifier":  "7e34-88a8",
+                                           "meaning":  "Position within the namespace"
+                                       },
+                    "rule_vector":  {
+                                        "identifier":  "057e4f535abc",
+                                        "meaning":  "Dictionary/schema/policy context"
+                                    }
+                },
+    "trust_source":  {
+                         "file":  "cvp-ministry-trust-source.json",
+                         "status":  "source text in valid JSON envelope; access credentials redacted",
+                         "original_changed":  false
+                     },
+    "archive":  {
+                    "app":  "index.html",
+                    "model":  "browser-local signed records and verification",
+                    "global_registry":  false
+                },
+    "documents":  "documents/cvp-document-catalog.json",
+    "boundaries":  [
+                       "This descriptor is not cryptographically signed.",
+                       "Local hash and signature checks do not establish real-world identity or trusted time.",
+                       "Publishing a CID does not by itself establish a patent, legal ownership, enforceable trust, or jurisdiction.",
+                       "The archive prototype does not guarantee global first-writer ordering or persistent availability."
+                   ],
+    "provenance":  {
+                       "signature":  null,
+                       "archive_recorded":  false,
+                       "record_status":  "descriptor-only"
+                   }
+}

@@ -1,0 +1,1196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111718">
+  <title>Det Levende Arkivet · Commons Vector Protocol</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111718;
+      --panel: #192122;
+      --panel-raised: #202a2a;
+      --line: #34403e;
+      --text: #edf0e9;
+      --muted: #a5b0a9;
+      --accent: #d7ed9c;
+      --accent-ink: #172017;
+      --danger: #ffb4a9;
+      --ok: #bce8bd;
+      --warning: #f3d791;
+      --mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: var(--accent); }
+    .page { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .brand span { color: var(--muted); font-weight: 500; letter-spacing: .04em; }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+    .status::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--warning);
+      content: "";
+    }
+    .status[data-state="ok"] { color: var(--ok); }
+    .status[data-state="ok"]::before { background: var(--ok); }
+    .status[data-state="error"] { color: var(--danger); }
+    .status[data-state="error"]::before { background: var(--danger); }
+    main { padding: 64px 0 88px; }
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 760px; margin-bottom: 12px; font-size: clamp(36px, 6vw, 64px); line-height: 1.04; letter-spacing: -.045em; }
+    .lead { max-width: 690px; color: var(--muted); font-size: 17px; line-height: 1.7; }
+    .genesis {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 16px;
+      margin: 32px 0 52px;
+    }
+    .genesis-card, .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+    }
+    .genesis-card { padding: 20px; }
+    .label, .field-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .value { overflow-wrap: anywhere; font-family: var(--mono); font-size: 13px; }
+    .vectors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+    .vector { padding-top: 14px; border-top: 1px solid var(--line); }
+    .vector b { display: block; margin-bottom: 5px; color: var(--accent); font-size: 12px; }
+    .vector code { color: var(--muted); font-family: var(--mono); font-size: 11px; }
+    .presentation { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .85fr); gap: 24px; align-items: center; margin: 32px 0 44px; }
+    .presentation img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 14px; background: white; }
+    .presentation-copy { color: var(--muted); font-size: 14px; line-height: 1.75; }
+    .presentation-copy h2 { margin-bottom: 12px; color: var(--text); }
+    .presentation-copy ul { padding-left: 20px; }
+    .presentation-copy code { color: var(--accent); font-family: var(--mono); }
+    .presentation-links { display: flex; flex-wrap: wrap; gap: 12px 18px; margin-top: 16px; font-size: 13px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
+    h2 { margin-bottom: 0; font-size: 27px; letter-spacing: -.025em; }
+    .subtle { margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .card { padding: 24px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .field { min-width: 0; }
+    .field.full { grid-column: 1 / -1; }
+    input, textarea {
+      width: 100%;
+      border: 1px solid #465250;
+      border-radius: 8px;
+      outline: none;
+      background: #111819;
+      color: var(--text);
+      padding: 12px 13px;
+    }
+    input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px #d7ed9c22; }
+    input::placeholder, textarea::placeholder { color: #77837d; }
+    textarea { min-height: 130px; resize: vertical; line-height: 1.55; }
+    input[type="file"] { padding: 9px; }
+    input[type="file"]::file-selector-button {
+      margin-right: 12px;
+      border: 0;
+      border-radius: 6px;
+      background: var(--panel-raised);
+      color: var(--text);
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+    .help { margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .button {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-raised);
+      color: var(--text);
+      padding: 10px 15px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .button:hover { border-color: #738077; }
+    .button.primary { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+    .button.primary:hover { background: #e4f5b6; }
+    .button:disabled { cursor: wait; opacity: .65; }
+    .notice {
+      margin: 16px 0 0;
+      border-left: 2px solid var(--warning);
+      padding: 3px 0 3px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .verify-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+    .result { min-height: 22px; margin: 13px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .result[data-state="ok"] { color: var(--ok); }
+    .result[data-state="error"] { color: var(--danger); }
+    .chain { display: grid; gap: 10px; margin-top: 18px; }
+    .record {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #151d1e;
+      padding: 15px;
+    }
+    .record-index {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    .record-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .record-title strong { font-size: 14px; }
+    .tag { border: 1px solid var(--line); border-radius: 99px; padding: 3px 7px; color: var(--muted); font-size: 10px; }
+    .record-meta { display: grid; gap: 5px; color: var(--muted); font-family: var(--mono); font-size: 11px; overflow-wrap: anywhere; }
+    .empty { border: 1px dashed var(--line); border-radius: 10px; padding: 26px; color: var(--muted); text-align: center; font-size: 13px; }
+    .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+    .info-item { border-top: 1px solid var(--line); padding-top: 12px; }
+    .info-item strong { display: block; margin-bottom: 5px; font-size: 13px; }
+    .info-item span { color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .copy { max-width: 760px; color: var(--muted); font-size: 14px; line-height: 1.8; }
+    .principles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px 24px; margin: 18px 0 0; padding: 0; list-style: none; }
+    .principles li { border-bottom: 1px solid var(--line); padding: 10px 0; color: var(--text); font-family: var(--mono); font-size: 12px; }
+    .principles span { color: var(--muted); }
+    footer { border-top: 1px solid var(--line); padding: 20px 0 32px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .section { margin-top: 50px; }
+
+    @media (max-width: 720px) {
+      .page { width: min(100% - 28px, 560px); }
+      main { padding-top: 42px; }
+      .genesis, .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .vectors { grid-template-columns: 1fr; }
+      .vector { padding-top: 10px; }
+      .presentation { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: repeat(2, 1fr); }
+      .section-heading { align-items: start; flex-direction: column; }
+      .verify-row { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .button { transition: background .15s ease, border-color .15s ease; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">Commons Vector Protocol <span>· IPFS provenance</span></div>
+      <div class="status" id="chain-status" role="status" aria-live="polite">Checking chain…</div>
+    </header>
+
+    <main>
+      <section aria-labelledby="title">
+        <p class="eyebrow">commons-vector-v1 · open archive</p>
+        <h1 id="title">Det Levende Arkivet</h1>
+        <p class="lead">A browser-side provenance prototype. Sign instruments with an Ed25519 key, derive content addresses with SHA-512, and verify linked records locally.</p>
+      </section>
+
+      <section class="presentation" aria-labelledby="presentation-title">
+        <img src="assets/commons-vector-presentation.png" alt="CVP artwork and presentation of the dictionary, provenance, and three vectors">
+        <div class="presentation-copy">
+          <p class="eyebrow">The presentation · the working archive</p>
+          <h2 id="presentation-title">A place to describe, create, and verify instruments</h2>
+          <p>Commons Vector Protocol connects a shared vocabulary, content references, contextual vectors, signatures, and previous records. This page combines that presentation with a browser-based archive prototype.</p>
+          <ul>
+            <li><code>tri_vector</code> · identity and instrument context</li>
+            <li><code>spatial_vector</code> · position within the namespace</li>
+            <li><code>rule_vector</code> · interpretation and applicable protocol rules</li>
+          </ul>
+          <div class="presentation-links">
+            <a href="cvp-mvp.json">CVP MVP manifest (JSON)</a>
+            <a href="cvp-genesis.json">Namespace genesis descriptor (JSON)</a>
+            <a href="cvp-dictionary.json">CVP vector dictionary (JSON)</a>
+            <a href="cvp-ministry-trust-source.json">Trust source text (JSON; access token removed)</a>
+            <a href="cvp-mvp-source.md">Original presentation text</a>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="documents-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Public source documents</p>
+            <h2 id="documents-title">PDFs in the archive package</h2>
+            <p class="subtle">Each file is linked with its content CID, SHA-512 digest, and vector composite in the catalog.</p>
+          </div>
+          <a href="documents/cvp-document-catalog.json">Document catalog (JSON)</a>
+        </div>
+        <div class="genesis">
+        <div class="genesis-card">
+          <span class="label">Presentation document</span>
+          <h3>Commons Vector Protocol</h3>
+          <p class="help">PDF · <a href="documents/Commons_Vector_Protocol.pdf">Open or download the presentation</a></p>
+        </div>
+        <div class="genesis-card">
+          <span class="label">Audit guide</span>
+          <h3>Commons Vector Protocol Audit Guide</h3>
+          <p class="help">PDF · <a href="documents/Commons_Vector_Protocol_Audit_Guide.pdf">Open or download the audit guide</a></p>
+        </div>
+        <div class="genesis-card">
+          <span class="label">Deliverables record</span>
+          <h3>All Three Deliverables</h3>
+          <p class="help">PDF · <a href="documents/Gmail_All_Three_Deliverables.pdf">Open or download the deliverables PDF</a></p>
+        </div>
+        </div>
+        <p class="notice">Catalog entries are content references, not signed archive records. They do not prove authorship, patent status, legal ownership, trusted time, or IPFS pinning.</p>
+      </section>
+
+      <section class="genesis" aria-label="Genesis reference">
+        <div class="genesis-card">
+          <span class="label">Genesis dictionary</span>
+          <div class="value">TRUST-ORDBOK-v2.0-IPFS.json</div>
+          <p class="help">The shared reference dictionary for this namespace.</p>
+        </div>
+        <div class="genesis-card">
+          <span class="label">Genesis CID</span>
+          <div class="value">bafkreiah7zzhane2iwpijyx7qiuwajqbmaep3a4pnvuo5f4jcakm4ibnzi</div>
+          <div class="vectors">
+            <div class="vector"><b>tri_vector</b><code>1a0de0b-f30c</code></div>
+            <div class="vector"><b>spatial_vector</b><code>7e34-88a8</code></div>
+            <div class="vector"><b>rule_vector</b><code>057e4f535abc</code></div>
+          </div>
+        </div>
+      </section>
+
+      <p class="subtle" id="key-status" role="status" aria-live="polite">Loading browser signing key…</p>
+
+      <section aria-labelledby="register-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">01 · Add to the archive</p>
+            <h2 id="register-title">Register an instrument</h2>
+            <p class="subtle">Each signed instrument binds its content reference, vectors, and chain position.</p>
+          </div>
+        </div>
+        <form class="card" id="register-form">
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label" for="instrument-name">Instrument name</label>
+              <input id="instrument-name" name="instrumentName" required maxlength="160" placeholder="e.g. Proclamation">
+            </div>
+            <div class="field">
+              <label class="field-label" for="registered-by">Registered by</label>
+              <input id="registered-by" name="registeredBy" maxlength="160" placeholder="Optional display name">
+            </div>
+            <div class="field">
+              <label class="field-label" for="instrument-type">Action type</label>
+              <input id="instrument-type" name="type" maxlength="40" value="text" placeholder="text, json, art…">
+            </div>
+            <div class="field">
+              <label class="field-label" for="instrument-intent">Intent (optional)</label>
+              <input id="instrument-intent" name="intent" maxlength="500" placeholder="A short description">
+            </div>
+            <div class="field full">
+              <label class="field-label" for="content-cid">Existing payload CID (optional)</label>
+              <input id="content-cid" name="cid" spellcheck="false" autocomplete="off" placeholder="Paste a CID from IPFS or Pinata">
+              <p class="help">A pasted CID is treated as a reference; this prototype does not fetch it or prove that it matches the supplied payload.</p>
+            </div>
+            <div class="field full">
+              <label class="field-label" for="payload-hash">Existing payload SHA-512 (required only without local payload bytes)</label>
+              <input id="payload-hash" name="payloadHash" spellcheck="false" autocomplete="off" placeholder="128 hexadecimal characters">
+            </div>
+            <div class="field full">
+              <label class="field-label" for="content-text">Content</label>
+              <textarea id="content-text" name="content" placeholder="Paste the payload to address and sign"></textarea>
+              <p class="help">The payload SHA-512 digest and raw CIDv1 address are computed locally. Supplying an existing CID overrides the derived address.</p>
+            </div>
+            <div class="field full">
+              <label class="field-label" for="content-file">Or choose a payload file</label>
+              <input id="content-file" name="file" type="file">
+              <p class="help">Selecting a file reads it locally. Nothing is uploaded unless you explicitly use the local-node upload button. If an existing CID is supplied, the bytes are still included in the signed payload hash.</p>
+            </div>
+            <div class="field full">
+              <label class="field-label" for="ipfs-api">Local IPFS API endpoint</label>
+              <input id="ipfs-api" value="http://127.0.0.1:5001/api/v0" spellcheck="false" autocomplete="off">
+              <div class="actions">
+                <button class="button" id="pin-button" type="button">Upload and pin payload to local node</button>
+              </div>
+              <p class="help">Only connects to localhost/loopback, only after you click. Kubo’s raw block endpoint accepts blocks up to 2 MiB; larger payloads need a different IPFS import flow. Your Kubo API must allow this page’s origin via CORS. Never expose the Kubo API publicly. Pinata/API-token upload is not configured in this client-only page.</p>
+              <p class="result" id="pin-result" role="status" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label class="field-label" for="spatial-vector">Spatial vector (optional)</label>
+              <input id="spatial-vector" maxlength="160" placeholder="Context/location label">
+            </div>
+            <div class="field">
+              <label class="field-label" for="rule-vector">Rule vector (optional)</label>
+              <input id="rule-vector" maxlength="160" placeholder="Interpretation label">
+            </div>
+            <div class="field full">
+              <label class="field-label" for="instrument-labels">Labels (comma-separated, optional)</label>
+              <input id="instrument-labels" maxlength="500" placeholder="archive, artwork, declaration">
+            </div>
+          </div>
+          <div class="actions">
+            <button class="button primary" id="register-button" type="submit">Register instrument</button>
+          </div>
+          <p class="notice">Your private Ed25519 key stays in this browser’s IndexedDB and is not included in exports. Records are stored locally. Uploads occur only when you explicitly send payload bytes to the configured loopback Kubo API; the app does not contact Pinata or retrieve gateway content. It does not provide trusted timestamps, establish identity or legal rights, or enforce a global first-record rule. Keep independent backups of exported records; clearing browser data may remove your key.</p>
+          <p class="result" id="register-result" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="section" aria-labelledby="verify-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">02 · Check integrity</p>
+            <h2 id="verify-title">Verify</h2>
+            <p class="subtle">Look up an instrument CID, payload CID, or payload digest; verify signatures, content addresses, and chain links locally.</p>
+          </div>
+          <button class="button" id="verify-chain-button" type="button">Verify full chain</button>
+        </div>
+        <div class="card">
+          <form id="lookup-form">
+            <label class="field-label" for="lookup-value">CID or digest</label>
+            <div class="verify-row">
+              <input id="lookup-value" spellcheck="false" autocomplete="off" placeholder="Instrument CID, payload CID or SHA-512 digest">
+              <button class="button" type="submit">Look up</button>
+            </div>
+          </form>
+          <p class="result" id="verify-result" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="chain-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">03 · Local history</p>
+            <h2 id="chain-title">Instrument chain</h2>
+            <p class="subtle" id="chain-count">0 instruments in this browser</p>
+          </div>
+          <button class="button" id="export-button" type="button">Export chain as JSON</button>
+        </div>
+        <div class="card" style="margin-bottom: 14px">
+          <label class="field-label" for="import-file">Import a CVP 2.0 archive</label>
+          <div class="verify-row">
+            <input id="import-file" type="file" accept="application/json,.json">
+            <button class="button" id="import-button" type="button">Verify and import</button>
+          </div>
+          <p class="help">Import verifies the records before adding them. Private keys and payload bytes are not imported.</p>
+          <p class="result" id="import-result" role="status" aria-live="polite"></p>
+        </div>
+        <div class="chain" id="chain-list" aria-live="polite"></div>
+      </section>
+
+      <section class="section" aria-labelledby="dictionary-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">The reference</p>
+            <h2 id="dictionary-title">TRUST-ORDBOK-v2.0-IPFS</h2>
+            <p class="subtle">The public definition reference for this prototype’s namespace.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="info-grid">
+            <div class="info-item"><strong>Ordbok</strong><span>The dictionary that defines terms.</span></div>
+            <div class="info-item"><strong>Instrument</strong><span>A file, declaration, artwork, or registration.</span></div>
+            <div class="info-item"><strong>CID</strong><span>A content-addressed reference, typically derived from content.</span></div>
+            <div class="info-item"><strong>Proveniens</strong><span>The sequence linking records to earlier records.</span></div>
+          </div>
+          <h3 style="margin: 28px 0 0; font-size: 16px">Tri-Vector · three coordinates</h3>
+          <p class="subtle">The CID identifies content; the Tri-Vector describes its context.</p>
+          <ul class="principles">
+            <li>tri_vector <span>· Identitet — who or what</span></li>
+            <li>spatial_vector <span>· Plassering — where it sits</span></li>
+            <li>rule_vector <span>· Fortolkning — how it is read</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="about-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">About the protocol</p>
+            <h2 id="about-title">An open provenance system</h2>
+          </div>
+        </div>
+        <div class="card copy">
+          <p>CVP is not a state, a court, or a blockchain. This prototype creates signed records and checks their content addresses, signatures, and chain links. A valid signature proves only that the corresponding private key signed those bytes; it does not independently prove a person’s identity, when the signature was made, factual truth, or legal effect.</p>
+          <p>Payloads are addressed using CIDv1 with the raw codec and SHA-512 multihash unless an existing CID is supplied. A supplied CID is not fetched or checked against payload bytes. Optional pinning uses Kubo’s local raw-block API only after an explicit click; Pinata credentials and gateway retrieval are not implemented.</p>
+          <p>For the first instrument, <code>chain.root</code> is the marker <code>SELF</code> to avoid a circular self-CID. Later instruments carry the first instrument’s CID as their root. Signatures cover the canonical unsigned instrument body; the self-CID then commits to that body and its signature.</p>
+          <p><strong style="color: var(--text)">The dictionary defines meaning. The record preserves meaning. The chain proves history. The archive preserves memory.</strong></p>
+          <p>Observe → Record → Sign → CID → Archive. Signing runs locally through the browser’s Web Crypto API; no private key is sent to a server.</p>
+          <p style="margin-bottom:0">All is Mind. Mind becomes Definition. Definition becomes Record. Record becomes CID. CID becomes Instrument. Instrument becomes Provenance. Provenance becomes Memory. Memory becomes Archive.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Prototype disclaimer: records are stored in this browser’s local storage and the non-extractable signing key in IndexedDB. Browser data can be changed or cleared; export the archive and retain the browser profile if you need continuity of the signing identity. This page does not provide a global registry, trusted timestamp, legal registration, or guarantee of permanence.
+    </footer>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const NAMESPACE = "commons-vector-v1";
+      const DICTIONARY = "TRUST-ORDBOK-v2.0-IPFS.json";
+      const DICTIONARY_CID = "bafkreiah7zzhane2iwpijyx7qiuwajqbmaep3a4pnvuo5f4jcakm4ibnzi";
+      const STORAGE_KEY = `cvp:${NAMESPACE}:chain:v2`;
+      const KEY_DB_NAME = `cvp:${NAMESPACE}:keys`;
+      const KEY_DB_STORE = "identity";
+      const KEY_ID = "default";
+      const encoder = new TextEncoder();
+
+      const elements = {
+        status: document.getElementById("chain-status"),
+        keyStatus: document.getElementById("key-status"),
+        form: document.getElementById("register-form"),
+        name: document.getElementById("instrument-name"),
+        registeredBy: document.getElementById("registered-by"),
+        type: document.getElementById("instrument-type"),
+        intent: document.getElementById("instrument-intent"),
+        cid: document.getElementById("content-cid"),
+        payloadHash: document.getElementById("payload-hash"),
+        content: document.getElementById("content-text"),
+        file: document.getElementById("content-file"),
+        ipfsApi: document.getElementById("ipfs-api"),
+        pinButton: document.getElementById("pin-button"),
+        pinResult: document.getElementById("pin-result"),
+        spatialVector: document.getElementById("spatial-vector"),
+        ruleVector: document.getElementById("rule-vector"),
+        labels: document.getElementById("instrument-labels"),
+        registerButton: document.getElementById("register-button"),
+        registerResult: document.getElementById("register-result"),
+        verifyChainButton: document.getElementById("verify-chain-button"),
+        lookupForm: document.getElementById("lookup-form"),
+        lookupValue: document.getElementById("lookup-value"),
+        verifyResult: document.getElementById("verify-result"),
+        chainCount: document.getElementById("chain-count"),
+        chainList: document.getElementById("chain-list"),
+        exportButton: document.getElementById("export-button"),
+        importFile: document.getElementById("import-file"),
+        importButton: document.getElementById("import-button"),
+        importResult: document.getElementById("import-result")
+      };
+
+      let chain = [];
+      let storageReady = false;
+      let signingKey = null;
+
+      function setResult(element, message, state) {
+        element.textContent = message;
+        element.dataset.state = state || "";
+      }
+
+      function setStatus(message, state) {
+        elements.status.textContent = message;
+        elements.status.dataset.state = state || "";
+      }
+
+      function canonicalJson(value) {
+        if (value === null || typeof value === "boolean" || typeof value === "string") return JSON.stringify(value);
+        if (typeof value === "number") {
+          if (!Number.isFinite(value)) throw new Error("Canonical JSON cannot encode non-finite numbers.");
+          return JSON.stringify(value);
+        }
+        if (Array.isArray(value)) {
+          return `[${value.map(item => {
+            if (item === undefined) throw new Error("Canonical JSON cannot encode undefined array values.");
+            return canonicalJson(item);
+          }).join(",")}]`;
+        }
+        if (typeof value !== "object") throw new Error("Unsupported value in canonical JSON.");
+        const keys = Object.keys(value).sort();
+        return `{${keys.map(key => {
+          if (value[key] === undefined) throw new Error("Canonical JSON cannot encode undefined object values.");
+          return `${JSON.stringify(key)}:${canonicalJson(value[key])}`;
+        }).join(",")}}`;
+      }
+
+      function subtleCrypto() {
+        if (!globalThis.crypto || !globalThis.crypto.subtle) {
+          throw new Error("Web Crypto is unavailable. Open this page in a supported browser, preferably over HTTPS or localhost.");
+        }
+        return globalThis.crypto.subtle;
+      }
+
+      function hex(bytes) {
+        return Array.from(bytes, byte => byte.toString(16).padStart(2, "0")).join("");
+      }
+
+      async function sha512(bytes) {
+        return new Uint8Array(await subtleCrypto().digest("SHA-512", bytes));
+      }
+
+      function base32(bytes) {
+        const alphabet = "abcdefghijklmnopqrstuvwxyz234567";
+        let output = "";
+        let buffer = 0;
+        let bits = 0;
+        for (const byte of bytes) {
+          buffer = (buffer << 8) | byte;
+          bits += 8;
+          while (bits >= 5) {
+            bits -= 5;
+            output += alphabet[(buffer >>> bits) & 31];
+          }
+          buffer &= (1 << bits) - 1;
+        }
+        if (bits) output += alphabet[(buffer << (5 - bits)) & 31];
+        return output;
+      }
+
+      function rawSha512CidFromDigest(digest) {
+        if (digest.length !== 64) throw new Error("SHA-512 digest must be 64 bytes.");
+        const cidBytes = new Uint8Array(4 + digest.length);
+        cidBytes.set([0x01, 0x55, 0x13, 0x40]);
+        cidBytes.set(digest, 4);
+        return `b${base32(cidBytes)}`;
+      }
+
+      function decodeBase32(value) {
+        const alphabet = "abcdefghijklmnopqrstuvwxyz234567";
+        let output = [];
+        let buffer = 0;
+        let bits = 0;
+        for (const character of value) {
+          const digit = alphabet.indexOf(character);
+          if (digit < 0) throw new Error("CIDv1 must use lowercase base32 multibase encoding.");
+          buffer = (buffer << 5) | digit;
+          bits += 5;
+          if (bits >= 8) {
+            bits -= 8;
+            output.push((buffer >>> bits) & 255);
+            buffer &= (1 << bits) - 1;
+          }
+        }
+        if (bits && buffer !== 0) throw new Error("CID has invalid base32 padding bits.");
+        return Uint8Array.from(output);
+      }
+
+      function readVarint(bytes, start) {
+        let value = 0;
+        let multiplier = 1;
+        let index = start;
+        while (index < bytes.length && index - start < 8) {
+          const byte = bytes[index++];
+          value += (byte & 0x7f) * multiplier;
+          if ((byte & 0x80) === 0) return { value, next: index };
+          multiplier *= 128;
+        }
+        throw new Error("CID contains an invalid varint.");
+      }
+
+      function validateCid(value) {
+        if (/^Qm[1-9A-HJ-NP-Za-km-z]{44}$/.test(value)) return;
+        if (!/^b[a-z2-7]+$/.test(value)) {
+          throw new Error("Enter a CIDv0 (Qm…) or CIDv1 lowercase base32 (b…) value.");
+        }
+        const bytes = decodeBase32(value.slice(1));
+        const version = readVarint(bytes, 0);
+        const codec = readVarint(bytes, version.next);
+        const hashCode = readVarint(bytes, codec.next);
+        const digestLength = readVarint(bytes, hashCode.next);
+        if (version.value !== 1 || codec.value === 0 || hashCode.value === 0 ||
+            digestLength.value === 0 || digestLength.next + digestLength.value !== bytes.length) {
+          throw new Error("CIDv1 does not contain a valid version, codec, and multihash.");
+        }
+      }
+
+      async function rawSha512Cid(bytes) {
+        return rawSha512CidFromDigest(await sha512(bytes));
+      }
+
+      function encodeBase64Url(bytes) {
+        let binary = "";
+        for (const byte of bytes) binary += String.fromCharCode(byte);
+        return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+      }
+
+      function decodeBase64Url(value) {
+        if (typeof value !== "string" || !/^[A-Za-z0-9_-]+$/.test(value)) {
+          throw new Error("Invalid base64url key or signature.");
+        }
+        const base64 = value.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - value.length % 4) % 4);
+        const binary = atob(base64);
+        return Uint8Array.from(binary, char => char.charCodeAt(0));
+      }
+
+      function openKeyDatabase() {
+        return new Promise((resolve, reject) => {
+          if (!("indexedDB" in globalThis)) {
+            reject(new Error("IndexedDB is unavailable; this browser cannot securely persist the non-extractable signing key."));
+            return;
+          }
+          const request = indexedDB.open(KEY_DB_NAME, 1);
+          request.onupgradeneeded = () => {
+            if (!request.result.objectStoreNames.contains(KEY_DB_STORE)) {
+              request.result.createObjectStore(KEY_DB_STORE);
+            }
+          };
+          request.onerror = () => reject(request.error || new Error("Could not open the signing-key database."));
+          request.onsuccess = () => resolve(request.result);
+        });
+      }
+
+      async function keyDatabaseAction(mode, action) {
+        const database = await openKeyDatabase();
+        try {
+          return await new Promise((resolve, reject) => {
+            const transaction = database.transaction(KEY_DB_STORE, mode);
+            const store = transaction.objectStore(KEY_DB_STORE);
+            const request = action(store);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error || new Error("Signing-key database operation failed."));
+            transaction.onabort = () => reject(transaction.error || new Error("Signing-key database transaction aborted."));
+          });
+        } finally {
+          database.close();
+        }
+      }
+
+      async function loadOrCreateKey() {
+        try {
+          const stored = await keyDatabaseAction("readonly", store => store.get(KEY_ID));
+          if (stored && stored.privateKey && stored.publicKey) return stored;
+          const pair = await subtleCrypto().generateKey({ name: "Ed25519" }, false, ["sign", "verify"]);
+          const publicKeyBytes = new Uint8Array(await subtleCrypto().exportKey("raw", pair.publicKey));
+          const identity = {
+            privateKey: pair.privateKey,
+            publicKey: pair.publicKey,
+            publicKeyBase64Url: encodeBase64Url(publicKeyBytes)
+          };
+          await keyDatabaseAction("readwrite", store => store.put(identity, KEY_ID));
+          return identity;
+        } catch (error) {
+          throw new Error(`Could not initialize a local Ed25519 signing key: ${error.message}`);
+        }
+      }
+
+      function saveChain(records) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+          return true;
+        } catch (error) {
+          setStatus("Storage error", "error");
+          setResult(elements.registerResult, `Could not save the chain in browser storage: ${error.message}`, "error");
+          return false;
+        }
+      }
+
+      function loadChain() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored === null) return [];
+        const parsed = JSON.parse(stored);
+        if (!Array.isArray(parsed)) throw new Error("Saved CVP 2.0 chain is not a JSON array.");
+        return parsed;
+      }
+
+      function withoutSelfCid(record) {
+        const copy = structuredClone(record);
+        delete copy.self_cid;
+        return copy;
+      }
+
+      function unsignedInstrument(record) {
+        const copy = structuredClone(record);
+        delete copy.self_cid;
+        if (!copy.instrument || !copy.instrument.tri_vector) throw new Error("Instrument is missing its Tri-Vector.");
+        delete copy.instrument.tri_vector.seal;
+        return copy;
+      }
+
+      async function calculateSelfCid(record) {
+        return rawSha512Cid(encoder.encode(canonicalJson(withoutSelfCid(record))));
+      }
+
+      async function verifyRecord(record, index, records) {
+        const prefix = `Instrument ${index + 1}`;
+        if (!record || record.cvp !== "2.0" || record.namespace !== NAMESPACE) {
+          throw new Error(`${prefix} has an unsupported CVP version or namespace.`);
+        }
+        if (!record.dictionary || record.dictionary.name !== DICTIONARY || record.dictionary.cid !== DICTIONARY_CID) {
+          throw new Error(`${prefix} references an unexpected genesis dictionary.`);
+        }
+        const instrument = record.instrument;
+        const tri = instrument && instrument.tri_vector;
+        const genesis = tri && tri.genesis;
+        const action = tri && tri.action;
+        const seal = tri && tri.seal;
+        const link = instrument && instrument.chain;
+        if (!genesis || !action || !seal || !link || !instrument.meta) {
+          throw new Error(`${prefix} is missing required instrument fields.`);
+        }
+        if (!/^[A-Za-z0-9_-]{40,60}$/.test(genesis.author_key) ||
+            !/^[0-9a-f]{128}$/.test(action.payload_hash) ||
+            typeof action.payload_cid !== "string" || !action.payload_cid ||
+            !["external", "raw-sha512"].includes(action.payload_cid_mode) ||
+            seal.algo !== "Ed25519" || seal.pubkey_ref !== genesis.author_key ||
+            typeof seal.signature !== "string") {
+          throw new Error(`${prefix} has malformed key, payload, or signature fields.`);
+        }
+        validateCid(action.payload_cid);
+        const expectedDepth = index;
+        const expectedPrevious = index === 0 ? "GENESIS" : records[index - 1].self_cid;
+        const expectedRoot = index === 0 ? "SELF" : records[0].self_cid;
+        if (link.depth !== expectedDepth || link.prev !== expectedPrevious || link.root !== expectedRoot) {
+          throw new Error(`${prefix} has an invalid previous link, depth, or root.`);
+        }
+        if (record.self_cid !== await calculateSelfCid(record)) {
+          throw new Error(`${prefix} self CID does not match its canonical record bytes.`);
+        }
+        if (action.payload_cid_mode === "raw-sha512" &&
+            action.payload_cid !== rawSha512CidFromDigest(Uint8Array.from(action.payload_hash.match(/../g), byte => parseInt(byte, 16)))) {
+          throw new Error(`${prefix} payload CID does not encode its SHA-512 digest.`);
+        }
+        const publicKey = await subtleCrypto().importKey(
+          "raw",
+          decodeBase64Url(genesis.author_key),
+          { name: "Ed25519" },
+          true,
+          ["verify"]
+        );
+        const validSignature = await subtleCrypto().verify(
+          { name: "Ed25519" },
+          publicKey,
+          decodeBase64Url(seal.signature),
+          encoder.encode(canonicalJson(unsignedInstrument(record)))
+        );
+        if (!validSignature) throw new Error(`${prefix} Ed25519 signature is invalid.`);
+      }
+
+      async function verifyRecords(records) {
+        if (!Array.isArray(records)) return { valid: false, message: "Chain is not an array of instruments." };
+        const seenInstruments = new Set();
+        const seenPayloads = new Set();
+        try {
+          for (let index = 0; index < records.length; index += 1) {
+            await verifyRecord(records[index], index, records);
+            if (seenInstruments.has(records[index].self_cid)) {
+              throw new Error(`Duplicate instrument CID at position ${index + 1}.`);
+            }
+            const action = records[index].instrument.tri_vector.action;
+            if (seenPayloads.has(action.payload_hash)) {
+              throw new Error(`Payload at instrument ${index + 1} was already registered earlier in this chain.`);
+            }
+            seenInstruments.add(records[index].self_cid);
+            seenPayloads.add(action.payload_hash);
+          }
+          const payloadNote = records.length
+            ? " Payload bytes were not retained, so their digest cannot be independently recomputed during later verification."
+            : "";
+          return { valid: true, message: `Chain valid: ${records.length} signed ${records.length === 1 ? "instrument" : "instruments"} checked.${payloadNote}` };
+        } catch (error) {
+          return { valid: false, message: error.message };
+        }
+      }
+
+      async function verifyChain() {
+        if (!storageReady) return { valid: false, message: "Local storage could not be read; verification is unavailable." };
+        return verifyRecords(chain);
+      }
+
+      function renderChain() {
+        elements.chainCount.textContent = `${chain.length} ${chain.length === 1 ? "instrument" : "instruments"} in this browser`;
+        elements.chainList.replaceChildren();
+        if (chain.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = "No instruments yet. Your first signed record will begin a chain.";
+          elements.chainList.append(empty);
+          return;
+        }
+
+        [...chain].reverse().forEach((record, reverseIndex) => {
+          const index = chain.length - reverseIndex;
+          const article = document.createElement("article");
+          article.className = "record";
+          const number = document.createElement("div");
+          number.className = "record-index";
+          number.textContent = String(index).padStart(3, "0");
+
+          const body = document.createElement("div");
+          const titleRow = document.createElement("div");
+          titleRow.className = "record-title";
+          const title = document.createElement("strong");
+          title.textContent = record.instrument.tri_vector.action.type || "Instrument";
+          const type = document.createElement("span");
+          type.className = "tag";
+          type.textContent = `#${String(index - 1).padStart(3, "0")}`;
+          titleRow.append(title, type);
+
+          const metadata = document.createElement("div");
+          metadata.className = "record-meta";
+          const tri = record.instrument.tri_vector;
+          const link = record.instrument.chain;
+          const lines = [
+            `Name: ${record.name}`,
+            ...(record.instrument.meta.registered_by ? [`Registered by (self-declared): ${record.instrument.meta.registered_by}`] : []),
+            `Payload CID: ${tri.action.payload_cid}`,
+            `Payload SHA-512: ${tri.action.payload_hash}`,
+            `Author key: ${tri.genesis.author_key}`,
+            `Created (self-reported): ${tri.genesis.created_utc}`,
+            `Previous: ${link.prev} · depth ${link.depth} · root ${link.root}`,
+            `Instrument CID: ${record.self_cid}`
+          ];
+          for (const line of lines) {
+            const item = document.createElement("div");
+            item.textContent = line;
+            metadata.append(item);
+          }
+          body.append(titleRow, metadata);
+          article.append(number, body);
+          elements.chainList.append(article);
+        });
+      }
+
+      async function getContentBytes() {
+        const file = elements.file.files[0];
+        const text = elements.content.value;
+        if (file && text.length) throw new Error("Choose either pasted content or a file, not both.");
+        if (file) return new Uint8Array(await file.arrayBuffer());
+        if (text.length) return encoder.encode(text);
+        return null;
+      }
+
+      function decodeHex(value) {
+        if (!/^[0-9a-f]{128}$/i.test(value)) throw new Error("Enter a 128-character SHA-512 hex digest.");
+        return Uint8Array.from(value.match(/../g), byte => parseInt(byte, 16));
+      }
+
+      elements.file.addEventListener("change", () => {
+        if (elements.file.files.length) elements.content.value = "";
+      });
+      elements.content.addEventListener("input", () => {
+        if (elements.content.value.length) elements.file.value = "";
+      });
+
+      elements.form.addEventListener("submit", async event => {
+        event.preventDefault();
+        setResult(elements.registerResult, "", "");
+        if (!storageReady || !signingKey) {
+          setResult(elements.registerResult, "Registration disabled because the saved chain could not be read.", "error");
+          return;
+        }
+        elements.registerButton.disabled = true;
+        try {
+          const name = elements.name.value.trim();
+          if (!name) throw new Error("Enter an instrument name.");
+          const bytes = await getContentBytes();
+          const providedCid = elements.cid.value.trim();
+          if (providedCid) validateCid(providedCid);
+          if (!bytes && !providedCid) throw new Error("Provide payload content/file or an existing payload CID.");
+          if (bytes && bytes.length === 0) throw new Error("The selected payload is empty.");
+          if (!bytes && !/^[0-9a-f]{128}$/i.test(elements.payloadHash.value.trim())) {
+            throw new Error("Without local payload bytes, enter the payload's 128-character SHA-512 digest.");
+          }
+          const payloadDigest = bytes ? await sha512(bytes) : decodeHex(elements.payloadHash.value.trim());
+          const payloadHash = hex(payloadDigest);
+          const derivedPayloadCid = rawSha512CidFromDigest(payloadDigest);
+          const payloadCid = providedCid || derivedPayloadCid;
+          if (chain.some(record => record.instrument.tri_vector.action.payload_hash === payloadHash)) {
+            throw new Error("This payload digest is already registered in this browser chain. The first record remains first.");
+          }
+          const depth = chain.length;
+          const unsigned = {
+            cvp: "2.0",
+            namespace: NAMESPACE,
+            dictionary: { name: DICTIONARY, cid: DICTIONARY_CID },
+            name,
+            instrument: {
+              tri_vector: {
+                genesis: {
+                  author_key: signingKey.publicKeyBase64Url,
+                  created_utc: new Date().toISOString(),
+                  intent: elements.intent.value.trim()
+                },
+                action: {
+                  type: elements.type.value.trim() || "text",
+                  payload_cid: payloadCid,
+                  payload_cid_mode: providedCid && providedCid !== derivedPayloadCid ? "external" : "raw-sha512",
+                  payload_hash: payloadHash
+                }
+              },
+              chain: {
+                prev: depth ? chain[depth - 1].self_cid : "GENESIS",
+                depth,
+                root: depth ? chain[0].self_cid : "SELF"
+              },
+              meta: {
+                registered_by: elements.registeredBy.value.trim(),
+                spatial_vector: elements.spatialVector.value.trim(),
+                rule_vector: elements.ruleVector.value.trim(),
+                labels: elements.labels.value.split(",").map(label => label.trim()).filter(Boolean)
+              }
+            }
+          };
+          const signature = new Uint8Array(await subtleCrypto().sign(
+            { name: "Ed25519" },
+            signingKey.privateKey,
+            encoder.encode(canonicalJson(unsigned))
+          ));
+          const record = structuredClone(unsigned);
+          record.instrument.tri_vector.seal = {
+            algo: "Ed25519",
+            signature: encodeBase64Url(signature),
+            pubkey_ref: signingKey.publicKeyBase64Url
+          };
+          record.self_cid = await calculateSelfCid(record);
+          const newChain = [...chain, record];
+          const check = await verifyRecords(newChain);
+          if (!check.valid) throw new Error(`New instrument failed self-verification: ${check.message}`);
+          if (!saveChain(newChain)) return;
+          chain = newChain;
+          renderChain();
+          setResult(elements.registerResult, `Instrument signed and registered locally. Instrument CID: ${record.self_cid}`, "ok");
+          elements.form.reset();
+          const verification = await verifyChain();
+          setStatus(verification.message, verification.valid ? "ok" : "error");
+        } catch (error) {
+          const message = error && error.name === "NotSupportedError"
+            ? "This browser does not support Ed25519 Web Crypto. Use a current Chrome, Edge, Firefox, or Safari release."
+            : error.message;
+          setResult(elements.registerResult, message, "error");
+        } finally {
+          elements.registerButton.disabled = false;
+        }
+      });
+
+      elements.pinButton.addEventListener("click", async () => {
+        elements.pinButton.disabled = true;
+        setResult(elements.pinResult, "", "");
+        try {
+          const bytes = await getContentBytes();
+          if (!bytes || bytes.length === 0) throw new Error("Paste content or choose a file before uploading.");
+          if (bytes.length > 2 * 1024 * 1024) throw new Error("Payload exceeds Kubo block/put’s 2 MiB interoperable block limit.");
+          const endpoint = new URL(elements.ipfsApi.value.trim());
+          const loopbackHosts = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+          if (!["http:", "https:"].includes(endpoint.protocol) ||
+              !loopbackHosts.has(endpoint.hostname) ||
+              endpoint.username || endpoint.password || endpoint.search || endpoint.hash) {
+            throw new Error("The API URL must be an HTTP(S) localhost/loopback URL with no credentials, query, or fragment.");
+          }
+          const apiBase = endpoint.href.replace(/\/+$/, "");
+          if (!/\/api\/v0$/.test(apiBase)) throw new Error("Use a Kubo API base URL ending in /api/v0.");
+
+          const localCid = await rawSha512Cid(bytes);
+          const formData = new FormData();
+          const payloadFile = elements.file.files[0];
+          formData.append("file", new Blob([bytes]), payloadFile ? payloadFile.name : "payload.bin");
+          const response = await fetch(
+            `${apiBase}/block/put?cid-codec=raw&mhtype=sha2-512&mhlen=64&pin=true`,
+            { method: "POST", body: formData }
+          );
+          if (!response.ok) {
+            const detail = (await response.text()).slice(0, 300);
+            throw new Error(`Local IPFS API returned HTTP ${response.status}${detail ? `: ${detail}` : ""}`);
+          }
+          const result = await response.json();
+          if (typeof result.Key !== "string") throw new Error("Local IPFS API response did not contain a CID in its Key field.");
+          validateCid(result.Key);
+          if (result.Key !== localCid) {
+            throw new Error(`Node returned ${result.Key}, but local raw SHA-512 CID is ${localCid}. No CID was applied to the form.`);
+          }
+          elements.cid.value = result.Key;
+          elements.payloadHash.value = hex(await sha512(bytes));
+          setResult(elements.pinResult, `Payload uploaded and pinned by the local node. CID: ${result.Key}`, "ok");
+        } catch (error) {
+          const detail = error instanceof TypeError
+            ? `${error.message} Check that Kubo is running locally and its CORS allowlist includes this page’s origin.`
+            : error.message;
+          setResult(elements.pinResult, `Local IPFS upload failed: ${detail}`, "error");
+        } finally {
+          elements.pinButton.disabled = false;
+        }
+      });
+
+      elements.verifyChainButton.addEventListener("click", async () => {
+        elements.verifyChainButton.disabled = true;
+        try {
+          const result = await verifyChain();
+          setResult(elements.verifyResult, result.message, result.valid ? "ok" : "error");
+          setStatus(result.message, result.valid ? "ok" : "error");
+        } catch (error) {
+          setResult(elements.verifyResult, `Verification failed: ${error.message}`, "error");
+          setStatus("Verification failed", "error");
+        } finally {
+          elements.verifyChainButton.disabled = false;
+        }
+      });
+
+      elements.lookupForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const query = elements.lookupValue.value.trim();
+        if (!query) {
+          setResult(elements.verifyResult, "Enter a CID or digest to look up.", "error");
+          return;
+        }
+        const normalized = query.toLowerCase();
+        const matches = chain.filter(record => {
+          const action = record.instrument.tri_vector.action;
+          return record.self_cid.toLowerCase() === normalized ||
+            action.payload_cid.toLowerCase() === normalized ||
+            action.payload_hash.toLowerCase() === normalized.replace(/^sha512:/, "");
+        });
+        if (!matches.length) {
+          setResult(elements.verifyResult, "No matching reference in this browser’s local chain.", "error");
+          return;
+        }
+        const record = matches[0];
+        setResult(elements.verifyResult, `Found “${record.name}”, authored by key ${record.instrument.tri_vector.genesis.author_key}; self-reported time ${record.instrument.tri_vector.genesis.created_utc}. Run full-chain verification to check its signature and links.`, "ok");
+      });
+
+      elements.exportButton.addEventListener("click", () => {
+        if (!storageReady) {
+          setResult(elements.verifyResult, "Export disabled because the saved chain could not be read.", "error");
+          return;
+        }
+        const exportData = {
+          cvp: "2.0",
+          exported_utc: new Date().toISOString(),
+          namespace: NAMESPACE,
+          dictionary: { name: DICTIONARY, cid: DICTIONARY_CID },
+          root: chain.length ? chain[0].self_cid : null,
+          instruments: chain,
+          integrity: {
+            count: chain.length,
+            root_verified: false,
+            chain_verified: false
+          }
+        };
+        verifyRecords(chain).then(result => {
+          exportData.integrity.root_verified = result.valid;
+          exportData.integrity.chain_verified = result.valid;
+          const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const anchor = document.createElement("a");
+          anchor.href = url;
+          anchor.download = `${NAMESPACE}-archive-v2.json`;
+          document.body.append(anchor);
+          anchor.click();
+          anchor.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          setResult(elements.verifyResult, "Verified CVP 2.0 JSON archive downloaded. The file does not contain private keys or payload bytes.", "ok");
+        }).catch(error => {
+          setResult(elements.verifyResult, `Could not verify archive before export: ${error.message}`, "error");
+        });
+      });
+
+      elements.importButton.addEventListener("click", async () => {
+        const file = elements.importFile.files[0];
+        if (!file) {
+          setResult(elements.importResult, "Choose a CVP 2.0 JSON archive first.", "error");
+          return;
+        }
+        elements.importButton.disabled = true;
+        try {
+          const data = JSON.parse(await file.text());
+          if (data.cvp !== "2.0" || data.namespace !== NAMESPACE ||
+              !data.dictionary || data.dictionary.name !== DICTIONARY ||
+              data.dictionary.cid !== DICTIONARY_CID || !Array.isArray(data.instruments)) {
+            throw new Error("File is not a compatible CVP 2.0 archive for this namespace.");
+          }
+          const verification = await verifyRecords(data.instruments);
+          if (!verification.valid) throw new Error(`Archive verification failed: ${verification.message}`);
+          if (data.root !== (data.instruments[0] ? data.instruments[0].self_cid : null)) {
+            throw new Error("Archive root does not match the first instrument CID.");
+          }
+          if (chain.length) {
+            const shared = Math.min(chain.length, data.instruments.length);
+            for (let i = 0; i < shared; i += 1) {
+              if (chain[i].self_cid !== data.instruments[i].self_cid) {
+                throw new Error("Imported chain does not extend the local chain; nothing was changed.");
+              }
+            }
+          }
+          const newChain = data.instruments.length > chain.length ? data.instruments : chain;
+          if (!saveChain(newChain)) throw new Error("Could not persist imported chain; existing local chain was kept.");
+          chain = newChain;
+          renderChain();
+          setResult(elements.importResult, newChain.length > 0
+            ? `Verified archive imported. ${verification.message}`
+            : "Verified empty archive imported.", "ok");
+          const localResult = await verifyChain();
+          setStatus(localResult.message, localResult.valid ? "ok" : "error");
+        } catch (error) {
+          setResult(elements.importResult, `Import failed: ${error.message}`, "error");
+        } finally {
+          elements.importButton.disabled = false;
+        }
+      });
+
+      async function initialize() {
+        try {
+          chain = loadChain();
+          storageReady = true;
+          renderChain();
+        } catch (error) {
+          storageReady = false;
+          chain = [];
+          elements.chainList.replaceChildren();
+          const message = document.createElement("div");
+          message.className = "empty";
+          message.textContent = `Could not read saved CVP 2.0 chain. Nothing was overwritten: ${error.message}`;
+          elements.chainList.append(message);
+          setStatus("Storage error", "error");
+          setResult(elements.registerResult, "Registration and import are disabled until browser storage can be read.", "error");
+          return;
+        }
+        try {
+          signingKey = await loadOrCreateKey();
+          const fingerprint = signingKey.publicKeyBase64Url.slice(0, 12);
+          elements.keyStatus.textContent = `Local Ed25519 identity ready · public key ${fingerprint}… (private key is non-extractable and remains in this browser)`;
+          elements.keyStatus.dataset.state = "ok";
+        } catch (error) {
+          elements.keyStatus.textContent = error.message;
+          elements.keyStatus.dataset.state = "error";
+          elements.registerButton.disabled = true;
+        }
+        const result = await verifyChain();
+        setStatus(result.message, result.valid ? "ok" : "error");
+      }
+
+      initialize().catch(error => {
+        setStatus(`Initialization failed: ${error.message}`, "error");
+        setResult(elements.registerResult, `Initialization failed: ${error.message}`, "error");
+      });
+    })();
+  </script>
+</body>
+</html>
