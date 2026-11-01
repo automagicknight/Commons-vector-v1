@@ -1,0 +1,76 @@
+{
+  "$schema": "https://cvp.commons-vector.org/schemas/v0.3/territory-anchor-complete.json",
+  "cvp": {
+    "protocol": "Commons Vector Protocol",
+    "version": "0.3",
+    "instrumentType": "sovereign_territory_and_legal_anchor",
+    "instrumentId": "CVP-MASTER-ANCHOR-001",
+    "archive": "Det Levende Arkivet",
+    "status": "ACTIVE",
+    "designObjective": "Complete self-contained definition of sovereign land anchoring, identity separation from commercial fictions, and First Record Wins provenance."
+  },
+  "title": "Master Sovereign Territory and Legal Anchor Specification",
+  "issuer": "did:cvp:commons-vector-v1:foundation:living-archive",
+  "subjectInstrument": "CVP-ADVISORY-001",
+  "uuid": "01a193e9-d4c3-79be-95bf-45cbcb430a94",
+  "carCID": "bafkreiegvbp5jc3vbnx2sq3tw72lbi44to7wflbi677ksyt7m52cqntbri",
+  "pinnedAt": "2026-10-31T22:48:00Z",
+  "foundationalContextForExternalParties": {
+    "corePremise": "This document establishes that living humans and natural land exist entirely outside administrative and commercial fictions. Commercial registries (such as Folkeregisteret and Tietoevry corporate databases) process identities as commercial objects, which cannot bind a living inhabitant.",
+    "firstRecordWins": "Cryptographic anchoring in the decentralized CVP archive creates an immutable, timestamped record that precedes and invalidates secondary administrative claims.",
+    "attorneyInFactProxy": "The living human acts as Attorney-in-Fact for the administrative persona using physical passports and private cryptographic keys as the bridge between zones."
+  },
+  "territory": {
+    "land": "Norway / Agder / Lillesand",
+    "geographicCoordinates": "Strandgata 5 / Fagertunveien 38A, 4790 Lillesand",
+    "jurisdiction": "Common Law / Natural Right / Sovereign Inhabitant",
+    "geologicalAnchor": "Gneiss Bedrock Thermal Sink (Passive Hardware Architecture)",
+    "status": "First Record Wins - Sovereign Inhabitant"
+  },
+  "nodes": [
+    {
+      "provider": "Local IPFS Node",
+      "peerID": "12D3KooW...",
+      "status": "PINNED",
+      "hardwareDescription": "Fanless, water-free CPU node cooled directly by Gneiss bedrock."
+    },
+    {
+      "provider": "Pinata IPFS Gateway",
+      "status": "PINNED",
+      "gatewayUrl": "https://yellow-managerial-leopon-627.mypinata.cloud/ipfs/bafkreiegvbp5jc3vbnx2sq3tw72lbi44to7wflbi677ksyt7m52cqntbri?pinataGatewayToken=aPRfmYgBiCRC9R_dnBQEuW87DpgfdB3TTK3xXspgWOh0YIFyI7MFbb9xS0SSn2gN"
+    }
+  ],
+  "vectors": {
+    "trivector": "1a0de0b-f30c",
+    "spatialvector": "7e34-88a8",
+    "rulevector": "057e4f535abc",
+    "imageGeometryVector": {
+      "type": "sacred_geometry_seal",
+      "symmetry": "toroidal_mandala",
+      "description": "Visual representation of multi-concentric circles, runic scripts, and energetic flow balancing the physical and structural dimensions."
+    }
+  },
+  "genesis": {
+    "dictionary": "TRUST-ORDBOK-v2.0-IPFS.json",
+    "dictionaryCID": "bafkreiah7zzhane2iwpijyx7qiuwajqbmaep3a4pnvuo5f4jcakm4ibnzi"
+  },
+  "legalShieldAndNovation": {
+    "exemptionClause": "Avtaleloven § 36",
+    "legalMechanism": "Novation and Expansion of Municipal Inhabitants",
+    "explanations": {
+      "municipalEntity": "Municipalities operate as commercial corporate entities with organizational numbers. They hold no sovereign authority over the living land or independent inhabitants.",
+      "unconscionability": "Any forced commercial obligation, debt, or administrative duty imposed without explicit, free, and informed personal will is declared null, void, and unconscionable under Avtaleloven § 36.",
+      "separationOfTerms": "Distinction strictly enforced between the commercial 'Legal Person' (capital letters / corporate fiction), 'Citizen' (body politic), and the sovereign 'Inhabitant' (living human anchored to land)."
+    }
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "signer": "did:cvp:commons-vector-v1:foundation:living-archive",
+    "value": "<ED25519_PRIVATE_KEY_SIGNATURE_OVER_JCS_CANONICAL_JSON>"
+  },
+  "provenance": {
+    "sequence": 3,
+    "previous": "bafkreiegvbp5jc3vbnx2sq3tw72lbi44to7wflbi677ksyt7m52cqntbri",
+    "event": "MASTER_TERRITORY_ANCHOR_CANONIZED"
+  }
+}
